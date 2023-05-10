@@ -72,7 +72,7 @@ def launch_setup(context, *args, **kwargs):
     ]
 
     target_container = (
-        "/sensing/lidar/top/pointcloud_preprocessor/pointcloud_container"
+        "/sensing/lidar/front/pointcloud_preprocessor/pointcloud_container"
         if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
         else LaunchConfiguration("pointcloud_container_name")
     )
