@@ -1,6 +1,8 @@
 /**:
   ros__parameters:
-    show_debug_info: false
+    # show_debug_info: True
+    show_debug_info: False
+    use_ekf_timer_callback: True
     enable_yaw_bias_estimation: True
     predict_frequency: 50.0
     tf_rate: 50.0

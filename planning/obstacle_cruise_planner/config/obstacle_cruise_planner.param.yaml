@@ -18,47 +18,86 @@
       nearest_dist_deviation_threshold: 3.0 # [m] for finding nearest index
       nearest_yaw_deviation_threshold: 1.57 # [rad] for finding nearest index
       min_behavior_stop_margin: 3.0 # [m]
-
       stop_obstacle_type:
-        unknown: true
-        car: true
-        truck: true
-        bus: true
-        trailer: true
-        motorcycle: true
-        bicycle: true
-        pedestrian: true
+        unknown: false
+        car: false
+        truck: false
+        bus: false
+        trailer: false
+        motorcycle: false
+        bicycle: false
+        pedestrian: false
 
       cruise_obstacle_type:
         inside:
-          unknown: true
-          car: true
-          truck: true
-          bus: true
-          trailer: true
-          motorcycle: true
-          bicycle: true
+          unknown: false
+          car: false
+          truck: false
+          bus: false
+          trailer: false
+          motorcycle: false
+          bicycle: false
           pedestrian: false
 
         outside:
           unknown: false
-          car: true
-          truck: true
-          bus: true
-          trailer: true
-          motorcycle: true
+          car: false
+          truck: false
+          bus: false
+          trailer: false
+          motorcycle: false
           bicycle: false
           pedestrian: false
 
       slow_down_obstacle_type:
-        unknown: true
-        car: true
-        truck: true
-        bus: true
-        trailer: true
-        motorcycle: true
-        bicycle: true
-        pedestrian: true
+        unknown: false
+        car: false
+        truck: false
+        bus: false
+        trailer: false
+        motorcycle: false
+        bicycle: false
+        pedestrian: false
+      # stop_obstacle_type:
+      #   unknown: true
+      #   car: true
+      #   truck: true
+      #   bus: true
+      #   trailer: true
+      #   motorcycle: true
+      #   bicycle: true
+      #   pedestrian: true
+
+      # cruise_obstacle_type:
+      #   inside:
+      #     unknown: true
+      #     car: true
+      #     truck: true
+      #     bus: true
+      #     trailer: true
+      #     motorcycle: true
+      #     bicycle: true
+      #     pedestrian: false
+
+      #   outside:
+      #     unknown: false
+      #     car: true
+      #     truck: true
+      #     bus: true
+      #     trailer: true
+      #     motorcycle: true
+      #     bicycle: false
+      #     pedestrian: false
+
+      # slow_down_obstacle_type:
+      #   unknown: true
+      #   car: true
+      #   truck: true
+      #   bus: true
+      #   trailer: true
+      #   motorcycle: true
+      #   bicycle: true
+      #   pedestrian: true
 
     behavior_determination:
       decimate_trajectory_step_length : 2.0 # longitudinal step length to calculate trajectory polygon for collision checking

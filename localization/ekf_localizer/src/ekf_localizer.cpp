@@ -72,9 +72,9 @@ EKFLocalizer::EKFLocalizer(const std::string & node_name, const rclcpp::NodeOpti
     this, get_clock(), rclcpp::Duration::from_seconds(ekf_dt_),
     std::bind(&EKFLocalizer::timerCallback, this));
 
-  timer_tf_ = rclcpp::create_timer(
-    this, get_clock(), rclcpp::Rate(params_.tf_rate_).period(),
-    std::bind(&EKFLocalizer::timerTFCallback, this));
+    timer_tf_ = rclcpp::create_timer(
+      this, get_clock(), rclcpp::Rate(params_.tf_rate_).period(),
+      std::bind(&EKFLocalizer::timerTFCallback, this));
 
   pub_pose_ = create_publisher<geometry_msgs::msg::PoseStamped>("ekf_pose", 1);
   pub_pose_cov_ =
@@ -250,13 +250,32 @@ void EKFLocalizer::showCurrentX()
  */
 void EKFLocalizer::timerTFCallback()
 {
+
+  if(!params_.use_ekf_timer_callback){
+    return;
+  }
+  DEBUG_INFO(get_logger(), "[SAKODA] In timerTFCallback");
+
   if (!is_activated_) {
+    DEBUG_INFO(get_logger(), "[SAKODA] In timerTFCallback !is_activated_");
     return;
   }
 
+  // RCLCPP_INFO_STREAM(
+  //   get_logger(), "[SAKODA] In timerTFCallback current_ekf_pose_.header.frame_id = "
+  //                   << current_ekf_pose_.header.frame_id);
   if (current_ekf_pose_.header.frame_id == "") {
     return;
   }
+  // RCLCPP_INFO_STREAM(
+  //   get_logger(), "[SAKODA] In timerTFCallback position = "
+  //                   << current_ekf_pose_.pose.position.x << "," << current_ekf_pose_.pose.position.y
+  //                   << "," << current_ekf_pose_.pose.position.z);
+  // RCLCPP_INFO_STREAM(
+  //   get_logger(),
+  //   "[SAKODA] In timerTFCallback orientation = "
+  //     << current_ekf_pose_.pose.orientation.x << "," << current_ekf_pose_.pose.orientation.y << ","
+  //     << current_ekf_pose_.pose.orientation.z << "," << current_ekf_pose_.pose.orientation.w);
 
   geometry_msgs::msg::TransformStamped transform_stamped;
   transform_stamped = tier4_autoware_utils::pose2transform(current_ekf_pose_, "base_link");
@@ -380,6 +399,15 @@ void EKFLocalizer::initEKF()
  */
 void EKFLocalizer::measurementUpdatePose(const geometry_msgs::msg::PoseWithCovarianceStamped & pose)
 {
+  // RCLCPP_INFO_STREAM(
+  //   get_logger(), "[SAKODA] In measurementUpdatePose position = "
+  //                   << pose.pose.pose.position.x << "," << pose.pose.pose.position.y << ","
+  //                   << pose.pose.pose.position.z);
+  // RCLCPP_INFO_STREAM(
+  //   get_logger(), "[SAKODA] In measurementUpdatePose orientation = "
+  //                   << pose.pose.pose.orientation.x << "," << pose.pose.pose.orientation.y << ","
+  //                   << pose.pose.pose.orientation.z << "," << pose.pose.pose.orientation.w);
+
   if (pose.header.frame_id != params_.pose_frame_id) {
     warning_.warnThrottle(
       fmt::format(
@@ -535,6 +563,16 @@ void EKFLocalizer::publishEstimateResult()
   rclcpp::Time current_time = this->now();
   const Eigen::MatrixXd X = ekf_.getLatestX();
   const Eigen::MatrixXd P = ekf_.getLatestP();
+
+  // RCLCPP_INFO_STREAM(
+  //   get_logger(), "[SAKODA] In publishEstimateResult position = "
+  //                   << current_ekf_pose_.pose.position.x << "," << current_ekf_pose_.pose.position.y
+  //                   << "," << current_ekf_pose_.pose.position.z);
+  // RCLCPP_INFO_STREAM(
+  //   get_logger(),
+  //   "[SAKODA] In publishEstimateResult orientation = "
+  //     << current_ekf_pose_.pose.orientation.x << "," << current_ekf_pose_.pose.orientation.y << ","
+  //     << current_ekf_pose_.pose.orientation.z << "," << current_ekf_pose_.pose.orientation.w);
 
   /* publish latest pose */
   pub_pose_->publish(current_ekf_pose_);

@@ -28,6 +28,7 @@ public:
     ekf_rate(node->declare_parameter("predict_frequency", 50.0)),
     ekf_dt(1.0 / std::max(ekf_rate, 0.1)),
     tf_rate_(node->declare_parameter("tf_rate", 10.0)),
+    use_ekf_timer_callback(node->declare_parameter("use_ekf_timer_callback", false)),
     enable_yaw_bias_estimation(node->declare_parameter("enable_yaw_bias_estimation", true)),
     extend_state_step(node->declare_parameter("extend_state_step", 50)),
     pose_frame_id(node->declare_parameter("pose_frame_id", std::string("map"))),
@@ -47,6 +48,7 @@ public:
   const double ekf_rate;
   const double ekf_dt;
   const double tf_rate_;
+  const bool use_ekf_timer_callback;
   const bool enable_yaw_bias_estimation;
   const int extend_state_step;
   const std::string pose_frame_id;
